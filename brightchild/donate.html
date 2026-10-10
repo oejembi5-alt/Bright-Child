@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donate — BrightChild</title>
+  <meta name="description" content="Make a donation to support children through BrightChild. Prototype donation flow.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23ff7a59'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>B</text></svg>">
+</head>
+<body>
+  <div id="siteNav" data-active=""></div>
+
+  <main>
+    <section class="flow-hero">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">Give with Confidence</span>
+          <h1 class="section-title">Make a Donation</h1>
+          <p class="section-sub">Five simple steps. Every detail below is part of a working prototype — no real payment is processed.</p>
+        </div>
+        <div class="flow-grid" style="margin-top:40px;">
+          <aside class="flow-steps" aria-label="Donation progress">
+            <div class="flow-step-item is-active" data-step-item="1"><span class="n">1</span><span>Currency</span></div>
+            <div class="flow-step-item" data-step-item="2"><span class="n">2</span><span>Amount</span></div>
+            <div class="flow-step-item" data-step-item="3"><span class="n">3</span><span>Destination</span></div>
+            <div class="flow-step-item" data-step-item="4"><span class="n">4</span><span>Your Details</span></div>
+            <div class="flow-step-item" data-step-item="5"><span class="n">5</span><span>Payment</span></div>
+          </aside>
+          <div>
+            <!-- ================= STEP 1 + 2 : currency & amount ================= -->
+            <div class="flow-card" data-card="1">
+              <h2>Step 1 &amp; 2 — Choose currency &amp; amount</h2>
+              <p class="flow-card__sub">Minimum donation is ₦5,000 (or the equivalent in your currency).</p>
+              <div class="flow-section">
+                <h3>Currency</h3>
+                <div class="seg seg--light" role="group" aria-label="Currency" id="fCurrency">
+                  <button type="button" data-currency="NGN" class="is-active">₦ NGN</button>
+                  <button type="button" data-currency="USD">$ USD</button>
+                  <button type="button" data-currency="GBP">£ GBP</button>
+                </div>
+              </div>
+              <div class="flow-section">
+                <h3>Frequency</h3>
+                <div class="seg seg--light" role="group" aria-label="Frequency" id="fFrequency">
+                  <button type="button" data-frequency="one-time" class="is-active">One-time</button>
+                  <button type="button" data-frequency="monthly">Monthly</button>
+                </div>
+              </div>
+              <div class="flow-section">
+                <h3>Amount</h3>
+                <div class="amount-grid amount-grid--light" id="fAmounts"></div>
+                <div style="margin-top:14px;">
+                  <label class="field" style="display:block;">
+                    <span style="display:block;font-weight:700;font-size:.85rem;margin-bottom:6px;" id="fCustomLabel">Custom amount</span>
+                    <input type="number" inputmode="numeric" id="fCustom" min="5000" step="500" placeholder="Enter custom amount">
+                  </label>
+                </div>
+                <p style="font-size:.8rem;color:var(--muted);margin-top:10px;" id="fEquiv"></p>
+              </div>
+              <div class="flow-nav">
+                <span class="flow-summary-chip" id="fChip1" aria-live="polite"></span>
+                <button type="button" class="btn btn--blue" id="fNext1">Continue →</button>
+              </div>
+            </div>
+
+            <!-- ================= STEP 3 : destination ================= -->
+            <div class="flow-card hidden" data-card="2">
+              <h2>Step 3 — Where should your gift go?</h2>
+              <p class="flow-card__sub">Support a specific child's campaign, or let BrightChild direct it where the need is greatest.</p>
+              <div class="choice-row choice-row--light" id="fDest" style="grid-template-columns:1fr;">
+                <button type="button" class="choice-pill choice-pill--light is-active" data-dest="general" style="border-color:#dfe5ee;color:var(--navy);background:var(--cream);">
+                  <span class="radio" aria-hidden="true"></span>
+                  <span><strong>General BrightChild Fund</strong><span style="color:var(--muted);">Directed to verified needs across all campaigns</span></span>
+                </button>
+                <button type="button" class="choice-pill choice-pill--light" data-dest="child" style="border-color:#dfe5ee;color:var(--navy);background:var(--cream);">
+                  <span class="radio" aria-hidden="true"></span>
+                  <span><strong>A Specific Child</strong><span style="color:var(--muted);">Choose a child's campaign to support</span></span>
+                </button>
+              </div>
+              <div id="fChildPick" class="hidden" style="margin-top:14px;">
+                <label class="field" style="display:block;">
+                  <span style="display:block;font-weight:700;font-size:.85rem;margin-bottom:6px;">Choose a child</span>
+                  <select id="fChildSelect" class="field-input" style="width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid #dfe5ee;font-size:1rem;font-family:inherit;background:#fbfcfe;color:var(--navy);">
+                    <!-- populated by JS -->
+                  </select>
+                </label>
+                <div id="fChildPreview" style="margin-top:14px;"></div>
+              </div>
+              <div class="flow-nav">
+                <button type="button" class="btn btn--ghost" data-back="1">← Back</button>
+                <button type="button" class="btn btn--blue" id="fNext2">Continue →</button>
+              </div>
+            </div>
+
+            <!-- ================= STEP 4 : donor info ================= -->
+            <div class="flow-card hidden" data-card="3">
+              <h2>Step 4 — Your details</h2>
+              <p class="flow-card__sub">So we can send your donation receipt and campaign updates. (Prototype — nothing is stored.)</p>
+              <form id="fDetails" novalidate>
+                <div class="form-grid">
+                  <label class="field"><span>First Name</span>
+                    <input type="text" name="firstName" autocomplete="given-name" required placeholder="Ada"></label>
+                  <label class="field"><span>Last Name</span>
+                    <input type="text" name="lastName" autocomplete="family-name" required placeholder="Obi"></label>
+                  <label class="field full"><span>Email</span>
+                    <input type="email" name="email" autocomplete="email" required placeholder="you@example.com"></label>
+                </div>
+                <p id="fDetailsError" role="alert" style="color:var(--coral);font-size:.88rem;margin-top:12px;min-height:1.2em;"></p>
+                <div class="flow-nav">
+                  <button type="button" class="btn btn--ghost" data-back="2">← Back</button>
+                  <button type="submit" class="btn btn--blue" id="fNext3">Continue to Payment →</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- ================= STEP 5 : payment placeholder ================= -->
+            <div class="flow-card hidden" data-card="4">
+              <h2>Step 5 — Payment</h2>
+              <p class="flow-card__sub">You're one step away from making a difference.</p>
+              <div class="pay-placeholder">
+                <span class="lock" aria-hidden="true">🔒</span>
+                <h3>Secure payment integration coming soon.</h3>
+                <p>This prototype stops here on purpose. The structure is ready for a future integration with providers such as Paystack, Flutterwave or Stripe — no card details are collected and no payment is processed.</p>
+                <div class="pay-badges" aria-hidden="true">
+                  <span>Paystack*</span><span>Flutterwave*</span><span>Stripe*</span><span>Cards</span><span>Bank Transfer</span><span>USSD</span>
+                </div>
+                <p class="pay-note">*Named for illustration only — no integration or endorsement exists yet.</p>
+              </div>
+              <div class="thanks-banner hidden" id="fThanks">
+                <b>Thank you, <span id="fThanksName">friend</span>!</b> Your sample gift of <span id="fThanksAmt"></span> <span id="fThanksDest"></span> was <b>not</b> processed — this is a design prototype. On the live platform, this is where a real secure checkout would begin.
+              </div>
+              <div class="flow-nav" style="margin-top:26px;">
+                <button type="button" class="btn btn--ghost" data-back="3">← Back</button>
+                <button type="button" class="btn btn--primary" id="fPreview">Preview Confirmation</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/currency.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script>
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => [...document.querySelectorAll(sel)];
+    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const flow = {
+      currency: BC_DonationState.currency || 'NGN',
+      frequency: BC_DonationState.frequency || 'one-time',
+      amount: BC_DonationState.amount || null,
+      destination: BC_DonationState.destination || 'general',
+      childId: BC_DonationState.childId || null,
+    };
+    if (!flow.amount) flow.amount = presets(flow.currency)[1];
+
+    /* ------- step indicator ------- */
+    const cardToStep = { 1: 2, 2: 3, 3: 4, 4: 5 };
+    function showCard(n) {
+      $$('[data-card]').forEach(c => c.classList.toggle('hidden', c.dataset.card !== String(n)));
+      const activeStep = cardToStep[n] || 1;
+      $$('[data-step-item]').forEach(it => {
+        const s = parseInt(it.dataset.stepItem, 10);
+        it.classList.toggle('is-active', s === activeStep);
+        it.classList.toggle('is-done', s < activeStep);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    $$('[data-back]').forEach(b => b.addEventListener('click', () => showCard(parseInt(b.dataset.back, 10))));
+
+    /* ------- step 1&2: currency / frequency / amount ------- */
+    const amountsEl = $('#fAmounts'), customEl = $('#fCustom'), equivEl = $('#fEquiv'), chip1 = $('#fChip1');
+
+    function renderAmounts() {
+      const p = presets(flow.currency);
+      amountsEl.innerHTML = p.map(a =>
+        `<button type="button" class="amount-chip amount-chip--light ${a === flow.amount ? 'is-active' : ''}" data-amount="${a}"
+           style="background:#f4f7fb;border:1.5px solid #dfe5ee;color:var(--navy);">
+           ${formatMoney(a, flow.currency)}<small>${equivalents(a, flow.currency).join(' · ')}</small></button>`).join('');
+      customEl.min = minDonation(flow.currency);
+      customEl.placeholder = `e.g. ${formatMoney(minDonation(flow.currency) * 2, flow.currency)}`;
+      $('#fCustomLabel').textContent = `Custom amount (min ${formatMoney(minDonation(flow.currency), flow.currency)})`;
+    }
+    function renderEquiv() {
+      equivEl.textContent = `${formatMoney(flow.amount, flow.currency)} ${equivalents(flow.amount, flow.currency).join(' · ')} — sample approximation`;
+      chip1.textContent = `${formatMoney(flow.amount, flow.currency)} · ${flow.frequency === 'monthly' ? 'Monthly' : 'One-time'} · ${flow.currency}`;
+    }
+
+    $('#fCurrency').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-currency]'); if (!b) return;
+      $$('#fCurrency .is-active').forEach(x => x.classList.remove('is-active')); b.classList.add('is-active');
+      flow.currency = b.dataset.currency;
+      flow.amount = presets(flow.currency)[1]; customEl.value = '';
+      renderAmounts(); renderEquiv();
+    });
+    $('#fFrequency').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-frequency]'); if (!b) return;
+      $$('#fFrequency .is-active').forEach(x => x.classList.remove('is-active')); b.classList.add('is-active');
+      flow.frequency = b.dataset.frequency; renderEquiv();
+    });
+    amountsEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.amount-chip'); if (!chip) return;
+      $$('.amount-chip').forEach(c => c.classList.remove('is-active'));
+      chip.classList.add('is-active');
+      flow.amount = parseInt(chip.dataset.amount, 10); customEl.value = ''; renderEquiv();
+    });
+    customEl.addEventListener('input', () => {
+      const v = parseInt(customEl.value, 10);
+      if (!isNaN(v)) {
+        if (v < minDonation(flow.currency)) {
+          equivEl.textContent = `Minimum donation is ${formatMoney(minDonation(flow.currency), flow.currency)}.`;
+          return;
+        }
+        $$('.amount-chip').forEach(c => c.classList.remove('is-active'));
+        flow.amount = v;
+      }
+      renderEquiv();
+    });
+    $('#fNext1').addEventListener('click', () => { renderEquiv(); showCard(2); });
+
+    /* ------- step 3: destination ------- */
+    const childSel = $('#fChildSelect'), childPick = $('#fChildPick'), childPreview = $('#fChildPreview');
+    childSel.innerHTML = CHILDREN.map(c =>
+      `<option value="${c.id}" ${c.id === flow.childId ? 'selected' : ''}>${esc(c.firstName)}, ${c.age} — ${esc(c.category)} (${esc(c.location)})</option>`).join('');
+
+    function renderChildPreview() {
+      const c = CHILDREN.find(x => x.id === childSel.value); if (!c) return;
+      const pct = Math.min(100, Math.round((c.raised / c.target) * 100));
+      childPreview.innerHTML = `
+        <div style="display:flex;gap:16px;align-items:center;background:var(--cream);border-radius:20px;padding:16px;">
+          <span style="width:84px;flex:none;">${childPortraitSVG(c.seed, 'Illustrated portrait of ' + esc(c.firstName))}</span>
+          <div style="flex:1;min-width:0;">
+            <strong>${esc(c.firstName)}, ${c.age}</strong> · ${esc(c.location)}<br>
+            <span style="color:var(--muted);font-size:.88rem;">${esc(c.story)}</span>
+            <div class="progress" style="margin:8px 0 4px;"><div class="progress__fill" style="width:${pct}%"></div></div>
+            <span style="font-size:.82rem;color:var(--muted);">${formatMoney(c.raised, 'NGN')} of ${formatMoney(c.target, 'NGN')} (${pct}%)</span>
+          </div>
+        </div>`;
+    }
+    $('#fDest').addEventListener('click', (e) => {
+      const pill = e.target.closest('.choice-pill'); if (!pill) return;
+      $$('#fDest .choice-pill').forEach(p => p.classList.remove('is-active'));
+      pill.classList.add('is-active');
+      flow.destination = pill.dataset.dest;
+      childPick.classList.toggle('hidden', flow.destination !== 'child');
+      if (flow.destination === 'child') { flow.childId = childSel.value; renderChildPreview(); }
+    });
+    childSel.addEventListener('change', () => { flow.childId = childSel.value; renderChildPreview(); });
+    if (flow.destination === 'child' && flow.childId) { childPick.classList.remove('hidden'); renderChildPreview(); }
+    $('#fNext2').addEventListener('click', () => {
+      if (flow.destination === 'child') flow.childId = childSel.value;
+      showCard(3);
+    });
+
+    /* ------- step 4: details ------- */
+    $('#fDetails').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const fn = f.querySelector('[name="firstName"]').value.trim(), ln = f.querySelector('[name="lastName"]').value.trim(), em = f.querySelector('[name="email"]').value.trim();
+      const err = $('#fDetailsError');
+      if (!fn || !ln) { err.textContent = 'Please enter your first and last name.'; return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { err.textContent = 'Please enter a valid email address.'; return; }
+      err.textContent = '';
+      $('#fThanksName').textContent = fn;
+      showCard(4);
+    });
+
+    /* ------- step 5: placeholder confirmation ------- */
+    $('#fPreview').addEventListener('click', () => {
+      const child = CHILDREN.find(c => c.id === flow.childId);
+      $('#fThanksAmt').textContent = formatMoney(flow.amount, flow.currency) + (flow.frequency === 'monthly' ? '/month' : '');
+      $('#fThanksDest').textContent = flow.destination === 'child' && child
+        ? `toward ${child.firstName}'s campaign` : 'to the General BrightChild Fund';
+      $('#fThanks').classList.remove('hidden');
+      $('#fPreview').textContent = '✓ Confirmation Preview Shown';
+      $('#fPreview').disabled = true;
+      $('#fPreview').style.opacity = '.7';
+    });
+
+    /* ------- sync with homepage widget state ------- */
+    renderAmounts(); renderEquiv();
+    if (BC_DonationState.currency !== 'NGN') {
+      $$('#fCurrency [data-currency]').forEach(b => b.classList.toggle('is-active', b.dataset.currency === BC_DonationState.currency));
+      flow.currency = BC_DonationState.currency;
+      flow.amount = BC_DonationState.amount || presets(flow.currency)[1];
+      renderAmounts(); renderEquiv();
+    }
+    if (BC_DonationState.frequency === 'monthly') {
+      $$('#fFrequency [data-frequency]').forEach(b => b.classList.toggle('is-active', b.dataset.frequency === 'monthly'));
+    }
+    if (BC_DonationState.destination === 'child' && BC_DonationState.childId) {
+      flow.destination = 'child';
+      $$('#fDest .choice-pill').forEach(p => p.classList.toggle('is-active', p.dataset.dest === 'child'));
+      childPick.classList.remove('hidden');
+      childSel.value = BC_DonationState.childId;
+      renderChildPreview();
+    }
+  </script>
+</body>
+</html>

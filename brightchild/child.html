@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Child Campaign — BrightChild</title>
+  <meta name="description" content="Support a child's campaign on BrightChild. Sample prototype campaign page.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23ff7a59'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>B</text></svg>">
+</head>
+<body>
+  <div id="siteNav" data-active="Children"></div>
+
+  <main>
+    <section class="campaign-hero">
+      <div class="container">
+        <a class="campaign-back" href="index.html#children">← Back to all children</a>
+        <div class="campaign-grid">
+          <div>
+            <div id="campaignPhotoSlot"></div>
+            <div class="campaign-sections">
+              <section class="campaign-section reveal">
+                <h2 id="aboutTitle">About</h2>
+                <p id="aboutText"></p>
+              </section>
+              <section class="campaign-section reveal">
+                <h2>What They Need</h2>
+                <p id="needText"></p>
+              </section>
+              <section class="campaign-section reveal">
+                <h2>How Your Donation Helps</h2>
+                <ul class="helps-list" id="helpsList"></ul>
+              </section>
+              <section class="campaign-section reveal">
+                <h2>Campaign Updates</h2>
+                <div class="timeline" id="timeline"></div>
+              </section>
+            </div>
+          </div>
+          <aside class="campaign-panel reveal" data-delay="1" aria-label="Donation summary">
+            <span class="eyebrow" id="panelCategory">Campaign</span>
+            <h1 class="section-title" id="panelTitle" style="font-size:1.6rem;">Campaign</h1>
+            <p class="child-card__loc" id="panelMeta"></p>
+            <div class="campaign-panel__progress-row">
+              <span id="panelRaised"></span><span class="pct" id="panelPct"></span>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Campaign progress">
+              <div class="progress__fill" id="panelBar"></div>
+            </div>
+            <p class="campaign-panel__goal" id="panelGoal"></p>
+            <h3 class="trust-block-title" style="margin-top:22px;">Choose an amount</h3>
+            <div class="amount-grid amount-grid--light" id="panelAmounts" style="grid-template-columns:repeat(2,1fr);"></div>
+            <a href="donate.html" class="btn btn--primary btn--lg btn--block" id="panelDonate">Donate</a>
+            <p class="campaign-panel__safe">🔒 Sample prototype — no real payments are processed. Secure payment integration coming soon.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/currency.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script>
+    const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const params = new URLSearchParams(location.search);
+    const child = CHILDREN.find(c => c.id === params.get('id')) || CHILDREN[0];
+    const pct = Math.min(100, Math.round((child.raised / child.target) * 100));
+
+    document.title = `${child.campaignTitle} — BrightChild`;
+
+    const altText = `Illustrated portrait of ${esc(child.firstName)}, a hopeful smiling child`;
+    document.getElementById('campaignPhotoSlot').innerHTML = childPortraitSVG(child.seed + '-large', altText);
+    document.querySelector('#campaignPhotoSlot svg').style.cssText =
+      'width:100%;border-radius:28px;border:8px solid #fff;box-shadow:0 18px 44px rgba(20,33,61,.16);display:block;';
+
+    document.getElementById('panelCategory').textContent = child.category;
+    document.getElementById('panelTitle').textContent = child.campaignTitle;
+    document.getElementById('panelMeta').textContent = `${child.age} years old · ${child.location}`;
+    document.getElementById('panelRaised').textContent = formatMoney(child.raised, 'NGN') + ' raised';
+    document.getElementById('panelPct').textContent = pct + '%';
+    document.getElementById('panelGoal').textContent = 'Goal: ' + formatMoney(child.target, 'NGN');
+    const bar = document.getElementById('panelBar');
+    bar.style.width = '0%'; bar.dataset.width = pct;
+    requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = pct + '%'; }));
+
+    document.getElementById('aboutTitle').textContent = 'About ' + child.firstName;
+    document.getElementById('aboutText').textContent = child.about;
+    document.getElementById('needText').textContent = child.currentNeed;
+    document.getElementById('helpsList').innerHTML =
+      child.howHelps.map(h => `<li><span class="check" aria-hidden="true">✓</span><span>${esc(h)}</span></li>`).join('');
+    document.getElementById('timeline').innerHTML = child.updates.map(u => `
+      <div class="timeline-item">
+        <span class="timeline-dot" aria-hidden="true"></span>
+        <div><span class="timeline-date">${esc(u.date)}</span><p>${esc(u.text)}</p></div>
+      </div>`).join('');
+
+    /* Amount presets for this campaign */
+    const amountsEl = document.getElementById('panelAmounts');
+    amountsEl.innerHTML = presets('NGN').map(a =>
+      `<button type="button" class="amount-chip amount-chip--light" data-amount="${a}" style="background:#f4f7fb;border:1.5px solid #dfe5ee;color:var(--navy);">${formatMoney(a, 'NGN')}</button>`
+    ).join('');
+    const donateBtn = document.getElementById('panelDonate');
+    donateBtn.textContent = `Help ${child.firstName} Today`;
+    amountsEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.amount-chip');
+      if (!chip) return;
+      amountsEl.querySelectorAll('.amount-chip').forEach(c => c.style.borderColor = '#dfe5ee');
+      chip.style.borderColor = 'var(--blue)';
+      BC_DonationState.currency = 'NGN';
+      BC_DonationState.amount = parseInt(chip.dataset.amount, 10);
+      BC_DonationState.destination = 'child';
+      BC_DonationState.childId = child.id;
+      BC_DonationState.frequency = 'one-time';
+      donateBtn.textContent = `Help ${child.firstName} Today — ${formatMoney(BC_DonationState.amount, 'NGN')}`;
+    });
+    donateBtn.addEventListener('click', () => {
+      BC_DonationState.destination = 'child';
+      BC_DonationState.childId = child.id;
+      if (!BC_DonationState.amount) { BC_DonationState.amount = presets('NGN')[1]; BC_DonationState.currency = 'NGN'; }
+    });
+  </script>
+</body>
+</html>
